@@ -33,11 +33,30 @@ export declare class DashboardService {
         };
     }>;
     private calculateMetricKPI;
-    getTeamPerformance(): Promise<any>;
+    getTeamPerformance(): Promise<{
+        team: string;
+        score: number;
+        members: number;
+        velocity: number;
+        quality: number;
+    }[]>;
     getSLAStatus(): Promise<{
         met: number;
         atRisk: number;
         missed: number;
     }>;
-    getRecentActivity(): Promise<any>;
+    getRecentActivity(): Promise<{
+        id: string;
+        type: string;
+        title: string;
+        description: string;
+        timestamp: Date;
+        user: {
+            id: string;
+            name: string;
+            email: string;
+            role: import("@prisma/client").$Enums.UserRole;
+            avatar: string | null;
+        } | undefined;
+    }[]>;
 }

@@ -3,19 +3,57 @@ import { CreateMetricDto } from './dto/metric.dto';
 export declare class MetricsController {
     private readonly metricsService;
     constructor(metricsService: MetricsService);
-    findAll(teamId?: string, metricType?: string): Promise<any>;
-    findByTeam(teamId: string): Promise<any>;
+    findAll(teamId?: string, metricType?: string): Promise<({
+        team: {
+            id: string;
+            name: string;
+        };
+    } & {
+        id: string;
+        teamId: string;
+        metricType: import("@prisma/client").$Enums.MetricType;
+        userId: string | null;
+        time: Date;
+        value: number;
+        unit: string;
+        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        source: import("@prisma/client").$Enums.SourceType;
+        createdBy: string;
+    })[]>;
+    findByTeam(teamId: string): Promise<{
+        id: string;
+        teamId: string;
+        metricType: import("@prisma/client").$Enums.MetricType;
+        userId: string | null;
+        time: Date;
+        value: number;
+        unit: string;
+        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        source: import("@prisma/client").$Enums.SourceType;
+        createdBy: string;
+    }[]>;
     getAggregates(teamId: string, metricType: string, startDate: string, endDate: string): Promise<{
         metricType: string;
-        count: any;
-        sum: any;
+        count: number;
+        sum: number;
         avg: number;
         min: number;
         max: number;
-        unit: any;
+        unit: string;
         startDate: Date;
         endDate: Date;
     } | null>;
-    create(createMetricDto: CreateMetricDto): Promise<any>;
-    bulkCreate(createMetricsDto: CreateMetricDto[]): Promise<any>;
+    create(createMetricDto: CreateMetricDto): Promise<{
+        id: string;
+        teamId: string;
+        metricType: import("@prisma/client").$Enums.MetricType;
+        userId: string | null;
+        time: Date;
+        value: number;
+        unit: string;
+        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        source: import("@prisma/client").$Enums.SourceType;
+        createdBy: string;
+    }>;
+    bulkCreate(createMetricsDto: CreateMetricDto[]): Promise<import("@prisma/client").Prisma.BatchPayload>;
 }
