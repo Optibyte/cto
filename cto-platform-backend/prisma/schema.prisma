@@ -1,0 +1,282 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CTO
+  Manager
+  TeamLead
+  Employee
+}
+
+enum MetricType {
+  velocity
+  quality
+  throughput
+  cycle_time
+  lead_time
+  bug_rate
+  deployment_frequency
+  mttr
+  change_failure_rate
+}
+
+enum SourceType {
+  jira
+  github
+  csv
+  manual
+}
+
+enum SLAStatus {
+  met
+  at_risk
+  missed
+}
+
+enum BreachSeverity {
+  warning
+  critical
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  EXPORT
+  LOGIN
+  LOGOUT
+}
+
+model User {
+  id            String    @id @default(uuid())
+  auth0Id       String    @unique @map("auth0_id")
+  email         String    @unique
+  fullName      String    @map("full_name")
+  role          UserRole
+  avatarUrl     String?   @map("avatar_url")
+  timezone      String    @default("UTC")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  isActive      Boolean   @default(true) @map("is_active")
+  lastLoginAt   DateTime? @map("last_login_at")
+  
+  teamsLed      Team[]    @relation("TeamLead")
+  teamMembers   TeamMember[]
+  createdMetrics Metric[] @relation("MetricCreator")
+  auditLogs     AuditLog[]
+  
+  @@map("users")
+}
+
+model Market {
+  id         String   @id @default(uuid())
+  name       String
+  regionCode String   @map("region_code")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  
+  accounts   Account[]
+  
+  @@map("markets")
+}
+
+model Account {
+  id               String   @id @default(uuid())
+  name             String
+  marketId         String   @map("market_id")
+  accountManagerId String   @map("account_manager_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  
+  market           Market   @relation(fields: [marketId], references: [id])
+  teams            Team[]
+  
+  @@map("accounts")
+}
+
+model Team {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  parentTeamId  String?   @map("parent_team_id")
+  accountId     String    @map("account_id")
+  teamLeadId    String    @map("team_lead_id")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  isActive      Boolean   @default(true) @map("is_active")
+  
+  account       Account   @relation(fields: [accountId], references: [id])
+  teamLead      User      @relation("TeamLead", fields: [teamLeadId], references: [id])
+  parentTeam    Team?     @relation("TeamHierarchy", fields: [parentTeamId], references: [id])
+  childTeams    Team[]    @relation("TeamHierarchy")
+  members       TeamMember[]
+  metrics       Metric[]
+  slaDefinitions SLADefinition[]
+  
+  @@map("teams")
+}
+
+model TeamMember {
+  id          String   @id @default(uuid())
+  teamId      String   @map("team_id")
+  userId      String   @map("user_id")
+  roleInTeam  String   @map("role_in_team")
+  joinedAt    DateTime @default(now()) @map("joined_at")
+  leftAt      DateTime? @map("left_at")
+  
+  team        Team     @relation(fields: [teamId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+  
+  @@unique([teamId, userId, joinedAt])
+  @@map("team_members")
+}
+
+model Metric {
+  id          String     @id @default(uuid())
+  time        DateTime
+  teamId      String     @map("team_id")
+  userId      String?    @map("user_id")
+  metricType  MetricType @map("metric_type")
+  value       Float
+  unit        String
+  metadata    Json?
+  source      SourceType
+  createdBy   String     @map("created_by")
+  
+  team        Team       @relation(fields: [teamId], references: [id])
+  creator     User       @relation("MetricCreator", fields: [createdBy], references: [id])
+  
+  @@map("metrics")
+}
+
+model SLADefinition {
+  id                  String    @id @default(uuid())
+  name                String
+  description         String?
+  teamId              String    @map("team_id")
+  metricType          String    @map("metric_type")
+  targetValue         Float     @map("target_value")
+  thresholdWarning    Float     @map("threshold_warning")
+  thresholdCritical   Float     @map("threshold_critical")
+  measurementWindow   String    @map("measurement_window")
+  isActive            Boolean   @default(true) @map("is_active")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  team                Team      @relation(fields: [teamId], references: [id])
+  metrics             SLAMetric[]
+  breaches            SLABreach[]
+  
+  @@map("sla_definitions")
+}
+
+model SLAMetric {
+  id          String    @id @default(uuid())
+  time        DateTime
+  slaId       String    @map("sla_id")
+  teamId      String    @map("team_id")
+  metricType  String    @map("metric_type")
+  targetValue Float     @map("target_value")
+  actualValue Float     @map("actual_value")
+  status      SLAStatus
+  
+  sla         SLADefinition @relation(fields: [slaId], references: [id])
+  
+  @@map("sla_metrics")
+}
+
+model SLABreach {
+  id              String          @id @default(uuid())
+  slaId           String          @map("sla_id")
+  teamId          String          @map("team_id")
+  breachStart     DateTime        @map("breach_start")
+  breachEnd       DateTime?       @map("breach_end")
+  severity        BreachSeverity
+  actualValue     Float           @map("actual_value")
+  targetValue     Float           @map("target_value")
+  variance        Float
+  isResolved      Boolean         @default(false) @map("is_resolved")
+  resolutionNotes String?         @map("resolution_notes")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  
+  sla             SLADefinition   @relation(fields: [slaId], references: [id])
+  
+  @@map("sla_breaches")
+}
+
+model JiraIntegration {
+  id                String    @id @default(uuid())
+  teamId            String    @map("team_id")
+  jiraUrl           String    @map("jira_url")
+  jiraProjectKey    String    @map("jira_project_key")
+  jiraBoardId       String?   @map("jira_board_id")
+  apiTokenEncrypted String    @map("api_token_encrypted")
+  syncFrequency     String    @map("sync_frequency")
+  lastSyncAt        DateTime? @map("last_sync_at")
+  lastSyncStatus    String?   @map("last_sync_status")
+  lastSyncError     String?   @map("last_sync_error")
+  isActive          Boolean   @default(true) @map("is_active")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  
+  @@map("jira_integrations")
+}
+
+model GitHubIntegration {
+  id                   String    @id @default(uuid())
+  teamId               String    @map("team_id")
+  githubOrg            String    @map("github_org")
+  githubRepo           String?   @map("github_repo")
+  accessTokenEncrypted String    @map("access_token_encrypted")
+  webhookSecret        String?   @map("webhook_secret_encrypted")
+  syncFrequency        String    @map("sync_frequency")
+  lastSyncAt           DateTime? @map("last_sync_at")
+  lastSyncStatus       String?   @map("last_sync_status")
+  lastSyncError        String?   @map("last_sync_error")
+  isActive             Boolean   @default(true) @map("is_active")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+  
+  @@map("github_integrations")
+}
+
+model CSVImport {
+  id              String    @id @default(uuid())
+  uploadedBy      String    @map("uploaded_by")
+  fileName        String    @map("file_name")
+  fileSize        BigInt    @map("file_size")
+  filePath        String    @map("file_path")
+  status          String
+  rowsTotal       Int?      @map("rows_total")
+  rowsProcessed   Int?      @map("rows_processed")
+  rowsFailed      Int?      @map("rows_failed")
+  errorLog        String?   @map("error_log")
+  uploadedAt      DateTime  @default(now()) @map("uploaded_at")
+  processedAt     DateTime? @map("processed_at")
+  
+  @@map("csv_imports")
+}
+
+model AuditLog {
+  id          String      @id @default(uuid())
+  timestamp   DateTime    @default(now())
+  userId      String?     @map("user_id")
+  entityType  String      @map("entity_type")
+  entityId    String      @map("entity_id")
+  action      AuditAction
+  oldValue    Json?       @map("old_value")
+  newValue    Json?       @map("new_value")
+  ipAddress   String?     @map("ip_address")
+  userAgent   String?     @map("user_agent")
+  requestId   String?     @map("request_id")
+  
+  user        User?       @relation(fields: [userId], references: [id])
+  
+  @@map("audit_logs")
+}
