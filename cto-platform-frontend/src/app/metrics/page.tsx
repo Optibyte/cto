@@ -31,9 +31,9 @@ import { useUsers } from '@/hooks/use-users';
 import { toast } from 'sonner';
 
 export default function MetricsPage() {
-    const { data: allMetrics = [], isLoading } = useMetrics() as { data: any[] | undefined, isLoading: boolean };
-    const { data: teams = [] }: { data: any[] | undefined } = useTeams() as any;
-    const { data: users = [] }: { data: any[] | undefined } = useUsers() as any;
+    const { data: allMetrics = [], isLoading } = useMetrics();
+    const { data: teams = [] } = useTeams();
+    const { data: users = [] } = useUsers();
     const { mutate: createMetric, isPending: isCreating } = useCreateMetric();
     const { mutate: deleteMetric } = useDeleteMetric();
     const [isDialogOpen, setIsDialogOpen] = useState(false);

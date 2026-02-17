@@ -1,6 +1,6 @@
-import { KPIData, TeamPerformanceData, Activity } from '../types';
+import { KPIItem, DashboardKPIs, TeamPerformanceData, Activity } from '../types';
 
-export const mockKPIData: Record<string, KPIData> = {
+export const mockKPIData: DashboardKPIs = {
     velocity: {
         current: 245,
         previous: 218,

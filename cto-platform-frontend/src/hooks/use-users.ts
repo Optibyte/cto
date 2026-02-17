@@ -8,8 +8,8 @@ export function useUsers() {
     return useQuery<User[]>({
         queryKey: ['users'],
         queryFn: async () => {
-            const { data } = await usersAPI.getAll();
-            return data as User[];
+            const response = await usersAPI.getAll();
+            return response.data as User[];
         },
     });
 }
@@ -18,8 +18,8 @@ export function useUser(id: string) {
     return useQuery<User>({
         queryKey: ['users', id],
         queryFn: async () => {
-            const { data } = await usersAPI.getById(id);
-            return data as User;
+            const response = await usersAPI.getById(id);
+            return response.data as User;
         },
         enabled: !!id,
     });

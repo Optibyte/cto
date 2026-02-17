@@ -2,14 +2,14 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { dashboardAPI } from '@/lib/api/client';
-import { KPIData, TeamPerformanceData, Activity } from '@/lib/types';
+import { KPIItem, DashboardKPIs, TeamPerformanceData, Activity } from '@/lib/types';
 
 export function useDashboardKPIs() {
-    return useQuery<Record<string, KPIData>>({
+    return useQuery<DashboardKPIs>({
         queryKey: ['dashboard', 'kpis'],
         queryFn: async () => {
             const response = await dashboardAPI.getKPIs();
-            return response.data as Record<string, KPIData>;
+            return response.data as DashboardKPIs;
         },
         staleTime: 5 * 60 * 1000, // 5 minutes
     });

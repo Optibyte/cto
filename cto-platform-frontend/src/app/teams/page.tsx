@@ -11,7 +11,7 @@ import { useTeams, useDeleteTeam } from '@/hooks/use-teams';
 import { toast } from 'sonner';
 
 export default function TeamsPage() {
-    const { data: teams = [], isLoading, refetch }: { data: any[] | undefined, isLoading: boolean, refetch: () => void } = useTeams() as any;
+    const { data: teams = [], isLoading, refetch } = useTeams();
     const { mutate: deleteTeam } = useDeleteTeam();
     const [searchQuery, setSearchQuery] = useState('');
 

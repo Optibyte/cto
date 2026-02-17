@@ -9,14 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Target, Zap, Clock } from 'lucide-react';
 import { useDashboardKPIs, useTeamPerformance, useSLAStatus, useRecentActivity } from '@/hooks/use-dashboard-data';
 import { mockKPIData, mockTeamPerformance, mockSLAStatus, mockActivities } from '@/lib/mock-data/dashboard';
-import { KPIData, TeamPerformanceData, Activity } from '@/lib/types';
+import { KPIItem, DashboardKPIs, TeamPerformanceData, Activity } from '@/lib/types';
 
 export default function DashboardPage() {
   // Use API hooks with fallback to mock data
-  const { data: kpiData = mockKPIData as Record<string, KPIData> } = useDashboardKPIs() as { data: Record<string, KPIData> };
-  const { data: teamPerformance = mockTeamPerformance as TeamPerformanceData[] } = useTeamPerformance() as { data: TeamPerformanceData[] };
-  const { data: slaStatus = mockSLAStatus as { met: number; atRisk: number; missed: number } } = useSLAStatus() as { data: { met: number; atRisk: number; missed: number } };
-  const { data: activities = mockActivities as Activity[] } = useRecentActivity() as { data: Activity[] };
+  const { data: kpiData = mockKPIData as DashboardKPIs } = useDashboardKPIs();
+  const { data: teamPerformance = mockTeamPerformance as TeamPerformanceData[] } = useTeamPerformance();
+  const { data: slaStatus = mockSLAStatus as { met: number; atRisk: number; missed: number } } = useSLAStatus();
+  const { data: activities = mockActivities as Activity[] } = useRecentActivity();
 
   return (
     <div className="space-y-6">
