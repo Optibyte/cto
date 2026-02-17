@@ -13,10 +13,10 @@ import { KPIItem, DashboardKPIs, TeamPerformanceData, Activity } from '@/lib/typ
 
 export default function DashboardPage() {
   // Use API hooks with fallback to mock data
-  const { data: kpiData = mockKPIData as DashboardKPIs } = useDashboardKPIs();
-  const { data: teamPerformance = mockTeamPerformance as TeamPerformanceData[] } = useTeamPerformance();
-  const { data: slaStatus = mockSLAStatus as { met: number; atRisk: number; missed: number } } = useSLAStatus();
-  const { data: activities = mockActivities as Activity[] } = useRecentActivity();
+  const { data: kpiData = mockKPIData } = useDashboardKPIs();
+  const { data: teamPerformance = mockTeamPerformance } = useTeamPerformance();
+  const { data: slaStatus = mockSLAStatus } = useSLAStatus();
+  const { data: activities = mockActivities } = useRecentActivity();
 
   return (
     <div className="space-y-6">
