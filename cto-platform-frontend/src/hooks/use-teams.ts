@@ -8,8 +8,8 @@ export function useTeams() {
     return useQuery<Team[]>({
         queryKey: ['teams'],
         queryFn: async () => {
-            const { data } = await teamsAPI.getAll();
-            return data as Team[];
+            const response = await teamsAPI.getAll();
+            return response.data as Team[];
         },
     });
 }
@@ -18,8 +18,8 @@ export function useTeam(id: string) {
     return useQuery<Team>({
         queryKey: ['teams', id],
         queryFn: async () => {
-            const { data } = await teamsAPI.getById(id);
-            return data as Team;
+            const response = await teamsAPI.getById(id);
+            return response.data as Team;
         },
         enabled: !!id,
     });

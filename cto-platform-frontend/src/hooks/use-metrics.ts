@@ -2,13 +2,14 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { metricsAPI } from '@/lib/api/client';
+import { Metric } from '@/lib/types';
 
 export function useMetrics(filters?: any) {
-    return useQuery({
+    return useQuery<Metric[]>({
         queryKey: ['metrics', filters],
         queryFn: async () => {
-            const { data } = await metricsAPI.getAll(filters);
-            return data;
+            const response = await metricsAPI.getAll(filters);
+            return response.data as Metric[];
         },
     });
 }

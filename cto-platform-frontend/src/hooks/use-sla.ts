@@ -2,34 +2,35 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { slaAPI } from '@/lib/api/client';
+import { SLADefinition, SLABreach } from '@/lib/types';
 
 export function useSLAs() {
-    return useQuery({
+    return useQuery<SLADefinition[]>({
         queryKey: ['sla'],
         queryFn: async () => {
-            const { data } = await slaAPI.getAll();
-            return data;
+            const response = await slaAPI.getAll();
+            return response.data as SLADefinition[];
         },
     });
 }
 
 export function useSLA(id: string) {
-    return useQuery({
+    return useQuery<SLADefinition>({
         queryKey: ['sla', id],
         queryFn: async () => {
-            const { data } = await slaAPI.getById(id);
-            return data;
+            const response = await slaAPI.getById(id);
+            return response.data as SLADefinition;
         },
         enabled: !!id,
     });
 }
 
 export function useSLABreaches(slaId?: string) {
-    return useQuery({
+    return useQuery<SLABreach[]>({
         queryKey: ['sla', 'breaches', slaId],
         queryFn: async () => {
-            const { data } = await slaAPI.getBreaches(slaId);
-            return data;
+            const response = await slaAPI.getBreaches(slaId);
+            return response.data as SLABreach[];
         },
     });
 }

@@ -81,9 +81,14 @@ export interface SLADefinition {
     unit: string;
     thresholdWarning: number;
     thresholdCritical: number;
+    measurementWindow?: string;
     status: SLAStatus;
     breachCount: number;
     isActive: boolean;
+    team?: Team;
+    _count?: {
+        breaches: number;
+    };
 }
 
 export interface SLABreach {
@@ -101,12 +106,20 @@ export interface SLABreach {
 }
 
 // Dashboard types
-export interface KPIData {
+export interface KPIItem {
     current: number;
     previous: number;
     change: number;
     trend: 'up' | 'down' | 'neutral';
     sparkline: number[];
+}
+
+export interface DashboardKPIs {
+    velocity: KPIItem;
+    quality: KPIItem;
+    throughput: KPIItem;
+    cycleTime: KPIItem;
+    [key: string]: KPIItem; // Fallback for other potential metrics
 }
 
 export interface TeamPerformanceData {

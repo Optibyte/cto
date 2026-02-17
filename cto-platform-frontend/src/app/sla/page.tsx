@@ -7,6 +7,7 @@ import { Plus, CheckCircle, AlertTriangle, XCircle, Trash2, Edit, Loader2, Arrow
 import Link from 'next/link';
 import { useSLAs, useDeleteSLA } from '@/hooks/use-sla';
 import { toast } from 'sonner';
+import { SLADefinition } from '@/lib/types';
 
 const statusConfig = {
     met: {
@@ -33,7 +34,7 @@ const statusConfig = {
 };
 
 export default function SLAPage() {
-    const { data: slaDefinitions = [], isLoading } = useSLAs() as { data: any[] | undefined, isLoading: boolean };
+    const { data: slaDefinitions = [], isLoading } = useSLAs();
     const { mutate: deleteSLA } = useDeleteSLA();
 
     const handleDelete = (id: string) => {
@@ -71,7 +72,7 @@ export default function SLAPage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {slaDefinitions.map((sla: any) => {
+                {slaDefinitions.map((sla: SLADefinition) => {
                     // Default to 'met' if status is missing or unknown
                     const statusKey = (sla.status as keyof typeof statusConfig) || 'met';
                     const config = statusConfig[statusKey] || statusConfig.met;

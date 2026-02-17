@@ -24,7 +24,7 @@ export default function EditSLAPage({ params }: { params: Promise<{ id: string }
     const router = useRouter();
     const { id: slaId } = use(params);
 
-    const { data: sla, isLoading: isLoadingSLA } = useSLA(slaId) as { data: any, isLoading: boolean };
+    const { data: sla, isLoading: isLoadingSLA } = useSLA(slaId);
     const { mutate: updateSLA, isPending: isUpdating } = useUpdateSLA();
 
     const [formData, setFormData] = useState({
