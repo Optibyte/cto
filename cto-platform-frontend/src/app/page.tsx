@@ -14,16 +14,16 @@ import { KPIItem, DashboardKPIs, TeamPerformanceData, Activity } from '@/lib/typ
 export default function DashboardPage() {
   // Use API hooks with fallback to mock data
   const { data: kpiDataRaw } = useDashboardKPIs();
-  const kpiData: DashboardKPIs = (kpiDataRaw ?? mockKPIData) as DashboardKPIs;
+  const kpiData: DashboardKPIs = ((kpiDataRaw as DashboardKPIs | undefined) ?? mockKPIData);
 
   const { data: teamPerformanceRaw } = useTeamPerformance();
-  const teamPerformance: TeamPerformanceData[] = (teamPerformanceRaw ?? mockTeamPerformance) as TeamPerformanceData[];
+  const teamPerformance: TeamPerformanceData[] = ((teamPerformanceRaw as TeamPerformanceData[] | undefined) ?? mockTeamPerformance);
 
   const { data: slaStatusRaw } = useSLAStatus();
-  const slaStatus: { met: number; atRisk: number; missed: number } = (slaStatusRaw ?? mockSLAStatus) as { met: number; atRisk: number; missed: number };
+  const slaStatus: { met: number; atRisk: number; missed: number } = ((slaStatusRaw as { met: number; atRisk: number; missed: number } | undefined) ?? mockSLAStatus);
 
   const { data: activitiesRaw } = useRecentActivity();
-  const activities: Activity[] = (activitiesRaw ?? mockActivities) as Activity[];
+  const activities: Activity[] = ((activitiesRaw as Activity[] | undefined) ?? mockActivities);
 
   return (
     <div className="space-y-6">
