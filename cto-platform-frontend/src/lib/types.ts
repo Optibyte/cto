@@ -25,6 +25,13 @@ export interface Team {
     createdAt: Date;
 }
 
+export interface Account {
+    id: string;
+    name: string;
+    marketId: string;
+    accountManagerId: string;
+}
+
 export interface TeamMember {
     id: string;
     teamId: string;

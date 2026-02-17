@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Team, User, Account } from '@/lib/types';
 
 export default function EditTeamPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
@@ -27,8 +28,8 @@ export default function EditTeamPage({ params }: { params: Promise<{ id: string 
 
     const { data: team, isLoading: isLoadingTeam } = useTeam(teamId);
     const { mutate: updateTeam, isPending: isUpdating } = useUpdateTeam();
-    const { data: users = [], isLoading: isLoadingUsers }: { data: any[] | undefined, isLoading: boolean } = useUsers() as any;
-    const { data: accounts = [], isLoading: isLoadingAccounts } = useAccounts() as any;
+    const { data: users = [], isLoading: isLoadingUsers } = useUsers();
+    const { data: accounts = [], isLoading: isLoadingAccounts } = useAccounts();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -42,7 +43,7 @@ export default function EditTeamPage({ params }: { params: Promise<{ id: string 
             setFormData({
                 name: team.name || '',
                 description: team.description || '',
-                teamLeadId: team.teamLeadId || '',
+                teamLeadId: (team as any).teamLeadId || '',
                 accountId: team.accountId || '',
             });
         }

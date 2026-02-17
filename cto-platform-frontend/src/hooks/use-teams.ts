@@ -2,23 +2,24 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { teamsAPI } from '@/lib/api/client';
+import { Team } from '@/lib/types';
 
 export function useTeams() {
-    return useQuery({
+    return useQuery<Team[]>({
         queryKey: ['teams'],
         queryFn: async () => {
             const { data } = await teamsAPI.getAll();
-            return data;
+            return data as Team[];
         },
     });
 }
 
 export function useTeam(id: string) {
-    return useQuery({
+    return useQuery<Team>({
         queryKey: ['teams', id],
         queryFn: async () => {
             const { data } = await teamsAPI.getById(id);
-            return data;
+            return data as Team;
         },
         enabled: !!id,
     });
