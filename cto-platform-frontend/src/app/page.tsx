@@ -13,10 +13,10 @@ import { KPIData, TeamPerformanceData, Activity } from '@/lib/types';
 
 export default function DashboardPage() {
   // Use API hooks with fallback to mock data
-  const { data: kpiData = mockKPIData as Record<string, KPIData> } = useDashboardKPIs();
-  const { data: teamPerformance = mockTeamPerformance as TeamPerformanceData[] } = useTeamPerformance();
-  const { data: slaStatus = mockSLAStatus as { met: number; atRisk: number; missed: number } } = useSLAStatus();
-  const { data: activities = mockActivities as Activity[] } = useRecentActivity();
+  const { data: kpiData = mockKPIData as Record<string, KPIData> } = useDashboardKPIs() as { data: Record<string, KPIData> };
+  const { data: teamPerformance = mockTeamPerformance as TeamPerformanceData[] } = useTeamPerformance() as { data: TeamPerformanceData[] };
+  const { data: slaStatus = mockSLAStatus as { met: number; atRisk: number; missed: number } } = useSLAStatus() as { data: { met: number; atRisk: number; missed: number } };
+  const { data: activities = mockActivities as Activity[] } = useRecentActivity() as { data: Activity[] };
 
   return (
     <div className="space-y-6">
