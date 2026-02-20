@@ -45,7 +45,7 @@ export function EmployeeDashboard() {
     const totalHours = weeklyTimesheet.reduce((sum, d) => sum + d.hours, 0);
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-in fade-in duration-700">
             {/* Header */}
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">My Dashboard</h1>

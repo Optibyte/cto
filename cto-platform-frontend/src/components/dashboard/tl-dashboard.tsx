@@ -35,7 +35,7 @@ const codeQualityMetrics = [
 
 export function TLDashboard() {
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-in fade-in duration-700">
             {/* Header */}
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Team Lead Dashboard</h1>
