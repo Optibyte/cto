@@ -3,8 +3,8 @@ import { SlaController } from './sla.controller';
 import { SlaService } from './sla.service';
 
 @Module({
-    controllers: [SlaController],
-    providers: [SlaService],
-    exports: [SlaService],
+  controllers: [SlaController],
+  providers: [SlaService],
+  exports: [SlaService],
 })
-export class SlaModule { }
+export class SlaModule {}

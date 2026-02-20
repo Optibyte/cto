@@ -47,8 +47,16 @@ exports.MetricsController = MetricsController;
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Get all metrics with optional filters' }),
-    (0, swagger_1.ApiQuery)({ name: 'teamId', required: false, description: 'Filter by team ID' }),
-    (0, swagger_1.ApiQuery)({ name: 'metricType', required: false, description: 'Filter by metric type' }),
+    (0, swagger_1.ApiQuery)({
+        name: 'teamId',
+        required: false,
+        description: 'Filter by team ID',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'metricType',
+        required: false,
+        description: 'Filter by metric type',
+    }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns filtered metrics' }),
     __param(0, (0, common_1.Query)('teamId')),
     __param(1, (0, common_1.Query)('metricType')),

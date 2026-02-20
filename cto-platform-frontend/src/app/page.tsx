@@ -96,14 +96,14 @@ export default function DashboardPage() {
       </div>
 
       {/* Activity Feed */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Recent Activity</CardTitle>
         </CardHeader>
         <CardContent>
           <ActivityFeed activities={activities} />
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 }

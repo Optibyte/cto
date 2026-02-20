@@ -39,7 +39,7 @@ let DashboardService = class DashboardService {
         };
     }
     calculateMetricKPI(metrics, metricType) {
-        const filtered = metrics.filter(m => m.metricType === metricType);
+        const filtered = metrics.filter((m) => m.metricType === metricType);
         if (filtered.length === 0) {
             return {
                 current: 0,
@@ -49,7 +49,7 @@ let DashboardService = class DashboardService {
                 sparkline: [],
             };
         }
-        const values = filtered.map(m => m.value);
+        const values = filtered.map((m) => m.value);
         const current = values.reduce((a, b) => a + b, 0) / values.length;
         const previous = current * 0.9;
         const change = ((current - previous) / previous) * 100;
@@ -57,7 +57,7 @@ let DashboardService = class DashboardService {
             current: parseFloat(current.toFixed(2)),
             previous: parseFloat(previous.toFixed(2)),
             change: parseFloat(change.toFixed(2)),
-            trend: (change > 0 ? 'up' : change < 0 ? 'down' : 'neutral'),
+            trend: change > 0 ? 'up' : change < 0 ? 'down' : 'neutral',
             sparkline: values.slice(0, 7),
         };
     }
@@ -76,16 +76,18 @@ let DashboardService = class DashboardService {
                 },
             },
         });
-        return teams.map(team => {
-            const velocityMetrics = team.metrics.filter(m => m.metricType === 'velocity');
-            const qualityMetrics = team.metrics.filter(m => m.metricType === 'quality');
+        return teams.map((team) => {
+            const velocityMetrics = team.metrics.filter((m) => m.metricType === 'velocity');
+            const qualityMetrics = team.metrics.filter((m) => m.metricType === 'quality');
             const avgVelocity = velocityMetrics.length > 0
-                ? velocityMetrics.reduce((sum, m) => sum + m.value, 0) / velocityMetrics.length
+                ? velocityMetrics.reduce((sum, m) => sum + m.value, 0) /
+                    velocityMetrics.length
                 : 0;
             const avgQuality = qualityMetrics.length > 0
-                ? qualityMetrics.reduce((sum, m) => sum + m.value, 0) / qualityMetrics.length
+                ? qualityMetrics.reduce((sum, m) => sum + m.value, 0) /
+                    qualityMetrics.length
                 : 0;
-            const score = (avgVelocity * 0.4 + avgQuality * 0.6);
+            const score = avgVelocity * 0.4 + avgQuality * 0.6;
             return {
                 team: team.name,
                 score: parseFloat(score.toFixed(1)),
@@ -108,7 +110,7 @@ let DashboardService = class DashboardService {
         let met = 0;
         let atRisk = 0;
         let missed = 0;
-        slas.forEach(sla => {
+        slas.forEach((sla) => {
             if (sla.metrics.length > 0) {
                 const latest = sla.metrics[0];
                 if (latest.status === 'met')
@@ -137,19 +139,21 @@ let DashboardService = class DashboardService {
                 },
             },
         });
-        return auditLogs.map(log => ({
+        return auditLogs.map((log) => ({
             id: log.id,
             type: log.action.toLowerCase(),
             title: `${log.action} ${log.entityType}`,
             description: `Entity ID: ${log.entityId}`,
             timestamp: log.timestamp,
-            user: log.user ? {
-                id: log.user.id,
-                name: log.user.fullName,
-                email: log.user.email,
-                role: log.user.role,
-                avatar: log.user.avatarUrl,
-            } : undefined,
+            user: log.user
+                ? {
+                    id: log.user.id,
+                    name: log.user.fullName,
+                    email: log.user.email,
+                    role: log.user.role,
+                    avatar: log.user.avatarUrl,
+                }
+                : undefined,
         }));
     }
 };

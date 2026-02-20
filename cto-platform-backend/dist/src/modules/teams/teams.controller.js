@@ -48,7 +48,10 @@ exports.TeamsController = TeamsController;
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Get all teams' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns all teams with members and lead info' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Returns all teams with members and lead info',
+    }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -56,7 +59,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Get team by ID' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Returns team details with members and metrics' }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Returns team details with members and metrics',
+    }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Team not found' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

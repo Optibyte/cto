@@ -26,7 +26,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateTeamDto.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: 'Main engineering team responsible for product development' }),
+    (0, swagger_1.ApiPropertyOptional)({
+        example: 'Main engineering team responsible for product development',
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)

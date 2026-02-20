@@ -7,29 +7,29 @@ export declare class DashboardService {
             current: number;
             previous: number;
             change: number;
-            trend: "up" | "down" | "neutral";
-            sparkline: any[];
+            trend: string;
+            sparkline: number[];
         };
         quality: {
             current: number;
             previous: number;
             change: number;
-            trend: "up" | "down" | "neutral";
-            sparkline: any[];
+            trend: string;
+            sparkline: number[];
         };
         throughput: {
             current: number;
             previous: number;
             change: number;
-            trend: "up" | "down" | "neutral";
-            sparkline: any[];
+            trend: string;
+            sparkline: number[];
         };
         cycleTime: {
             current: number;
             previous: number;
             change: number;
-            trend: "up" | "down" | "neutral";
-            sparkline: any[];
+            trend: string;
+            sparkline: number[];
         };
     }>;
     private calculateMetricKPI;

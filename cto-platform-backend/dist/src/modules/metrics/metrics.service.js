@@ -68,7 +68,7 @@ let MetricsService = class MetricsService {
         if (metrics.length === 0) {
             return null;
         }
-        const values = metrics.map(m => m.value);
+        const values = metrics.map((m) => m.value);
         const sum = values.reduce((a, b) => a + b, 0);
         const avg = sum / values.length;
         const min = Math.min(...values);

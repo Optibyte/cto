@@ -110,6 +110,12 @@ export interface TeamPerformanceData {
     quality: number;
 }
 
+export interface DashboardSLAStatus {
+    met: number;
+    atRisk: number;
+    missed: number;
+}
+
 export interface Activity {
     id: string;
     type: string;

@@ -131,7 +131,7 @@ export default function SLAPage() {
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-between gap-3 border-t border-border/30 pt-4 bg-secondary/5">
-                                <Link href={`/sla/${sla.id}`} className="flex-1">
+                                <Link href={`/sla/editsla`} className="flex-1">
                                     <Button variant="outline" size="sm" className="w-full rounded-xl border-border/50 hover:bg-accent hover:text-accent-foreground transition-all group-hover:border-primary/30">
                                         <Edit className="h-4 w-4 mr-2" />
                                         Edit

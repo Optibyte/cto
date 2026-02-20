@@ -22,4 +22,4 @@ import { AccountsModule } from './modules/accounts/accounts.module';
     AccountsModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

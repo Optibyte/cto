@@ -1,8 +1,9 @@
 import { PrismaService } from '../../prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 export declare class MetricsService {
     private prisma;
     constructor(prisma: PrismaService);
-    findAll(filters?: any): Promise<({
+    findAll(filters?: Prisma.MetricWhereInput): Promise<({
         team: {
             id: string;
             name: string;
@@ -10,40 +11,40 @@ export declare class MetricsService {
     } & {
         id: string;
         teamId: string;
-        metricType: import("@prisma/client").$Enums.MetricType;
         userId: string | null;
         time: Date;
+        metricType: import("@prisma/client").$Enums.MetricType;
         value: number;
         unit: string;
-        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        metadata: Prisma.JsonValue | null;
         source: import("@prisma/client").$Enums.SourceType;
         createdBy: string;
     })[]>;
     findByTeam(teamId: string): Promise<{
         id: string;
         teamId: string;
-        metricType: import("@prisma/client").$Enums.MetricType;
         userId: string | null;
         time: Date;
+        metricType: import("@prisma/client").$Enums.MetricType;
         value: number;
         unit: string;
-        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        metadata: Prisma.JsonValue | null;
         source: import("@prisma/client").$Enums.SourceType;
         createdBy: string;
     }[]>;
-    create(data: any): Promise<{
+    create(data: Prisma.MetricUncheckedCreateInput): Promise<{
         id: string;
         teamId: string;
-        metricType: import("@prisma/client").$Enums.MetricType;
         userId: string | null;
         time: Date;
+        metricType: import("@prisma/client").$Enums.MetricType;
         value: number;
         unit: string;
-        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        metadata: Prisma.JsonValue | null;
         source: import("@prisma/client").$Enums.SourceType;
         createdBy: string;
     }>;
-    bulkCreate(data: any[]): Promise<import("@prisma/client").Prisma.BatchPayload>;
+    bulkCreate(data: Prisma.MetricUncheckedCreateInput[]): Promise<Prisma.BatchPayload>;
     getAggregates(teamId: string, metricType: string, startDate: Date, endDate: Date): Promise<{
         metricType: string;
         count: number;

@@ -23,8 +23,8 @@ export function TeamPerformanceChart({ data }: TeamPerformanceChartProps) {
                     }}
                 />
                 <Legend />
-                <Bar dataKey="score" fill="hsl(var(--primary))" name="Performance Score" />
-                <Bar dataKey="quality" fill="hsl(var(--success))" name="Quality %" />
+                <Bar dataKey="score" fill="var(--chart-1)" name="Performance Score" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="quality" fill="var(--chart-2)" name="Quality %" radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
     );

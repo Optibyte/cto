@@ -75,7 +75,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateMetricDto.prototype, "unit", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: { sprint: 'Sprint 24', notes: 'Good velocity' } }),
+    (0, swagger_1.ApiPropertyOptional)({
+        example: { sprint: 'Sprint 24', notes: 'Good velocity' },
+    }),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)

@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useRole } from '@/contexts/role-context';
+import { ROUTE_FEATURE_MAP, ROLE_PERMISSIONS } from '@/lib/permissions';
 import {
     LayoutDashboard,
     Users,
@@ -14,8 +16,11 @@ import {
     Settings,
     Bell,
     FileSearch,
+    Layers,
     LucideIcon,
+    Shield,
 } from 'lucide-react';
+import { title } from 'process';
 
 interface NavItem {
     title: string;
@@ -31,6 +36,11 @@ const navigationItems: NavItem[] = [
         href: '/',
     },
     {
+        title: 'Project Management',
+        icon: Layers,
+        href: '/drilldown',
+    },
+    {
         title: 'Teams',
         icon: Users,
         href: '/teams',
@@ -41,9 +51,10 @@ const navigationItems: NavItem[] = [
         href: '/metrics',
     },
     {
-        title: 'SLA',
+        title: "SLA",
         icon: Target,
-        href: '/sla',
+        href: "/sla",
+
     },
     {
         title: 'Reports',
@@ -78,8 +89,23 @@ const navigationItems: NavItem[] = [
     },
 ];
 
+const ROLE_LABELS: Record<string, string> = {
+    CTO: 'CTO',
+    Manager: 'Manager',
+    TeamLead: 'Team Lead',
+    Employee: 'Employee',
+};
+
 export function Sidebar() {
     const pathname = usePathname();
+    const { role } = useRole();
+
+    // Filter nav items based on current role permissions
+    const permittedItems = navigationItems.filter((item) => {
+        const feature = ROUTE_FEATURE_MAP[item.href];
+        if (!feature) return true;
+        return ROLE_PERMISSIONS[role]?.includes(feature);
+    });
 
     return (
         <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border/30 bg-card/95 backdrop-blur-sm shadow-xl shadow-black/5 dark:shadow-black/20">
@@ -93,9 +119,19 @@ export function Sidebar() {
                 </Link>
             </div>
 
+            {/* Role Badge */}
+            <div className="px-4 py-3 border-b border-border/30">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-primary/10">
+                    <Shield className="h-4 w-4 text-primary" />
+                    <span className="text-xs font-semibold text-primary uppercase tracking-wider">
+                        {ROLE_LABELS[role] || role}
+                    </span>
+                </div>
+            </div>
+
             {/* Navigation */}
             <nav className="flex-1 space-y-1 p-4">
-                {navigationItems.map((item) => (
+                {permittedItems.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}

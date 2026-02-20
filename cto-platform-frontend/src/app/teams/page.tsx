@@ -135,7 +135,7 @@ export default function TeamsPage() {
                             </div>
                         </CardContent>
                         <CardFooter className="flex justify-end gap-2 border-t border-border/30 pt-4">
-                            <Link href={`/teams/${team.id}`} className="flex-1">
+                            <Link href={`/teams/edit`} className="flex-1">
                                 <Button variant="outline" size="sm" className="w-full rounded-xl border-border/50 hover:bg-accent/50 transition-all">
                                     <Edit className="h-4 w-4 mr-2" />
                                     Edit

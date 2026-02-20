@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { dashboardAPI } from '@/lib/api/client';
+import { KPIData, TeamPerformanceData, DashboardSLAStatus, Activity } from '@/lib/types';
 
 export function useDashboardKPIs() {
     return useQuery({

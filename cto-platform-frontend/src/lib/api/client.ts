@@ -1,111 +1,141 @@
-import axios, { AxiosInstance, AxiosError } from 'axios';
+import { mockTeams, mockTeamMembers } from '../mock-data/teams';
+import { mockSLADefinitions, mockSLABreaches } from '../mock-data/sla';
+import { mockKPIData, mockTeamPerformance, mockSLAStatus, mockActivities } from '../mock-data/dashboard';
 
-class APIClient {
-    private client: AxiosInstance;
-
-    constructor() {
-        this.client = axios.create({
-            baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
-            timeout: 30000,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        // Request interceptor
-        this.client.interceptors.request.use(
-            (config) => {
-                const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-                if (token) {
-                    config.headers.Authorization = `Bearer ${token}`;
-                }
-                return config;
-            },
-            (error) => Promise.reject(error)
-        );
-
-        // Response interceptor
-        this.client.interceptors.response.use(
-            (response) => response,
-            async (error: AxiosError) => {
-                if (error.response?.status === 401) {
-                    // Handle token refresh or redirect to login
-                    if (typeof window !== 'undefined') {
-                        localStorage.removeItem('auth_token');
-                        window.location.href = '/login';
-                    }
-                }
-                return Promise.reject(error);
-            }
-        );
-    }
-
-    get<T>(url: string, config = {}) {
-        return this.client.get<T>(url, config);
-    }
-
-    post<T>(url: string, data: any, config = {}) {
-        return this.client.post<T>(url, data, config);
-    }
-
-    put<T>(url: string, data: any, config = {}) {
-        return this.client.put<T>(url, data, config);
-    }
-
-    delete<T>(url: string, config = {}) {
-        return this.client.delete<T>(url, config);
-    }
-}
-
-export const apiClient = new APIClient();
-
-// API endpoints
-export const dashboardAPI = {
-    getKPIs: () => apiClient.get('/api/v1/dashboard/kpis'),
-    getTeamPerformance: () => apiClient.get('/api/v1/dashboard/teams/comparison'),
-    getSLAStatus: () => apiClient.get('/api/v1/dashboard/sla/status'),
-    getActivity: () => apiClient.get('/api/v1/dashboard/activity'),
-};
+// Helper to simulate API delay
+const delay = (ms: number = 500) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const teamsAPI = {
-    getAll: () => apiClient.get('/api/v1/teams'),
-    getById: (id: string) => apiClient.get(`/api/v1/teams/${id}`),
-    create: (data: any) => apiClient.post('/api/v1/teams', data),
-    update: (id: string, data: any) => apiClient.put(`/api/v1/teams/${id}`, data),
-    delete: (id: string) => apiClient.delete(`/api/v1/teams/${id}`),
-};
-
-export const metricsAPI = {
-    getAll: (filters?: any) => apiClient.get('/api/v1/metrics', { params: filters }),
-    getByTeam: (teamId: string) => apiClient.get(`/api/v1/metrics/team/${teamId}`),
-    getAggregates: (teamId: string, metricType: string, startDate: string, endDate: string) =>
-        apiClient.get(`/api/v1/metrics/aggregates/${teamId}/${metricType}`, {
-            params: { startDate, endDate },
-        }),
-    create: (data: any) => apiClient.post('/api/v1/metrics', data),
-    bulkCreate: (data: any[]) => apiClient.post('/api/v1/metrics/bulk', data),
-    update: (id: string, data: any) => apiClient.put(`/api/v1/metrics/${id}`, data),
-    delete: (id: string) => apiClient.delete(`/api/v1/metrics/${id}`),
-};
-
-export const slaAPI = {
-    getAll: () => apiClient.get('/api/v1/sla'),
-    getById: (id: string) => apiClient.get(`/api/v1/sla/${id}`),
-    getBreaches: (slaId?: string) => apiClient.get('/api/v1/sla/breaches', { params: { slaId } }),
-    create: (data: any) => apiClient.post('/api/v1/sla', data),
-    update: (id: string, data: any) => apiClient.put(`/api/v1/sla/${id}`, data),
-    delete: (id: string) => apiClient.delete(`/api/v1/sla/${id}`),
+    getAll: async () => {
+        await delay();
+        return { data: mockTeams };
+    },
+    getById: async (id: string) => {
+        await delay();
+        const team = mockTeams.find(t => t.id === id);
+        return { data: team };
+    },
+    create: async (data: any) => {
+        await delay();
+        return { data: { id: Math.random().toString(36).substr(2, 9), ...data } };
+    },
+    update: async (id: string, data: any) => {
+        await delay();
+        return { data: { id, ...data } };
+    },
+    delete: async (id: string) => {
+        await delay();
+        return { data: { success: true } };
+    }
 };
 
 export const usersAPI = {
-    getAll: () => apiClient.get('/api/v1/users'),
-    getById: (id: string) => apiClient.get(`/api/v1/users/${id}`),
-    create: (data: any) => apiClient.post('/api/v1/users', data),
-    update: (id: string, data: any) => apiClient.put(`/api/v1/users/${id}`, data),
-    delete: (id: string) => apiClient.delete(`/api/v1/users/${id}`),
+    getAll: async () => {
+        await delay();
+        return { data: mockTeamMembers.map(tm => tm.user) };
+    },
+    getById: async (id: string) => {
+        await delay();
+        const member = mockTeamMembers.find(tm => tm.user.id === id);
+        return { data: member?.user };
+    },
+    create: async (data: any) => {
+        await delay();
+        return { data: { id: Math.random().toString(36).substr(2, 9), ...data } };
+    },
+    update: async (id: string, data: any) => {
+        await delay();
+        return { data: { id, ...data } };
+    },
+    delete: async (id: string) => {
+        await delay();
+        return { data: { success: true } };
+    }
+};
+
+export const slaAPI = {
+    getAll: async () => {
+        await delay();
+        return { data: mockSLADefinitions };
+    },
+    getById: async (id: string) => {
+        await delay();
+        const sla = mockSLADefinitions.find(s => s.id === id);
+        return { data: sla };
+    },
+    getBreaches: async (slaId: string) => {
+        await delay();
+        const breaches = mockSLABreaches.filter(b => b.slaId === slaId);
+        return { data: breaches };
+    },
+    create: async (data: any) => {
+        await delay();
+        return { data: { id: Math.random().toString(36).substr(2, 9), ...data } };
+    },
+    update: async (id: string, data: any) => {
+        await delay();
+        return { data: { id, ...data } };
+    },
+    delete: async (id: string) => {
+        await delay();
+        return { data: { success: true } };
+    }
+};
+
+export const metricsAPI = {
+    getAll: async (filters?: any) => {
+        await delay();
+        // Return some dummy metrics or filter existing ones
+        return { data: [] };
+    },
+    getByTeam: async (teamId: string) => {
+        await delay();
+        return { data: [] };
+    },
+    getAggregates: async (teamId: string, metricType: string, startDate?: string, endDate?: string) => {
+        await delay();
+        return { data: [] };
+    },
+    create: async (data: any) => {
+        await delay();
+        return { data };
+    },
+    bulkCreate: async (data: any[]) => {
+        await delay();
+        return { data };
+    },
+    update: async (id: string, data: any) => {
+        await delay();
+        return { data };
+    },
+    delete: async (id: string) => {
+        await delay();
+        return { data: { success: true } };
+    }
+};
+
+export const dashboardAPI = {
+    getKPIs: async () => {
+        await delay();
+        return { data: mockKPIData };
+    },
+    getTeamPerformance: async () => {
+        await delay();
+        return { data: mockTeamPerformance };
+    },
+    getSLAStatus: async () => {
+        await delay();
+        return { data: mockSLAStatus };
+    },
+    getActivity: async () => {
+        await delay();
+        return { data: mockActivities };
+    }
 };
 
 export const accountsAPI = {
-    getAll: () => apiClient.get('/api/v1/accounts'),
-    getById: (id: string) => apiClient.get(`/api/v1/accounts/${id}`),
+    getAll: async () => {
+        await delay();
+        return { data: [{ id: 'a1', name: 'Default Account' }] };
+    }
 };

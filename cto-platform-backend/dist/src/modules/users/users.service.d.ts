@@ -1,4 +1,5 @@
 import { PrismaService } from '../../prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 export declare class UsersService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -70,7 +71,7 @@ export declare class UsersService {
         isActive: boolean;
         lastLoginAt: Date | null;
     } | null>;
-    create(data: any): Promise<{
+    create(data: Prisma.UserCreateInput): Promise<{
         id: string;
         auth0Id: string;
         email: string;
@@ -83,7 +84,7 @@ export declare class UsersService {
         isActive: boolean;
         lastLoginAt: Date | null;
     }>;
-    update(id: string, data: any): Promise<{
+    update(id: string, data: Prisma.UserUpdateInput): Promise<{
         id: string;
         auth0Id: string;
         email: string;

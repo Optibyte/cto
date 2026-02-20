@@ -6,8 +6,8 @@ import { TeamsModule } from '../teams/teams.module';
 import { SlaModule } from '../sla/sla.module';
 
 @Module({
-    imports: [MetricsModule, TeamsModule, SlaModule],
-    controllers: [DashboardController],
-    providers: [DashboardService],
+  imports: [MetricsModule, TeamsModule, SlaModule],
+  controllers: [DashboardController],
+  providers: [DashboardService],
 })
-export class DashboardModule { }
+export class DashboardModule {}
