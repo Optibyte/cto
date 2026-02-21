@@ -4,9 +4,6 @@ export declare class TeamsService {
     private prisma;
     constructor(prisma: PrismaService);
     findAll(): Promise<({
-        _count: {
-            members: number;
-        };
         teamLead: {
             id: string;
             email: string;
@@ -30,6 +27,9 @@ export declare class TeamsService {
             joinedAt: Date;
             leftAt: Date | null;
         })[];
+        _count: {
+            members: number;
+        };
     } & {
         id: string;
         createdAt: Date;
@@ -80,9 +80,9 @@ export declare class TeamsService {
         metrics: {
             id: string;
             teamId: string;
+            metricType: import("@prisma/client").$Enums.MetricType;
             userId: string | null;
             time: Date;
-            metricType: import("@prisma/client").$Enums.MetricType;
             value: number;
             unit: string;
             metadata: import("@prisma/client/runtime/library").JsonValue | null;

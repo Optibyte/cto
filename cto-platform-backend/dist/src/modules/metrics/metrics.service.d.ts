@@ -11,9 +11,9 @@ export declare class MetricsService {
     } & {
         id: string;
         teamId: string;
+        metricType: import("@prisma/client").$Enums.MetricType;
         userId: string | null;
         time: Date;
-        metricType: import("@prisma/client").$Enums.MetricType;
         value: number;
         unit: string;
         metadata: Prisma.JsonValue | null;
@@ -23,9 +23,9 @@ export declare class MetricsService {
     findByTeam(teamId: string): Promise<{
         id: string;
         teamId: string;
+        metricType: import("@prisma/client").$Enums.MetricType;
         userId: string | null;
         time: Date;
-        metricType: import("@prisma/client").$Enums.MetricType;
         value: number;
         unit: string;
         metadata: Prisma.JsonValue | null;
@@ -35,9 +35,9 @@ export declare class MetricsService {
     create(data: Prisma.MetricUncheckedCreateInput): Promise<{
         id: string;
         teamId: string;
+        metricType: import("@prisma/client").$Enums.MetricType;
         userId: string | null;
         time: Date;
-        metricType: import("@prisma/client").$Enums.MetricType;
         value: number;
         unit: string;
         metadata: Prisma.JsonValue | null;

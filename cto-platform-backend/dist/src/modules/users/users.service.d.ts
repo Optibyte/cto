@@ -71,7 +71,7 @@ export declare class UsersService {
         isActive: boolean;
         lastLoginAt: Date | null;
     } | null>;
-    create(data: Prisma.UserCreateInput): Promise<{
+    create(data: Prisma.UserUncheckedCreateInput): Promise<{
         id: string;
         auth0Id: string;
         email: string;
@@ -84,7 +84,7 @@ export declare class UsersService {
         isActive: boolean;
         lastLoginAt: Date | null;
     }>;
-    update(id: string, data: Prisma.UserUpdateInput): Promise<{
+    update(id: string, data: Prisma.UserUncheckedUpdateInput): Promise<{
         id: string;
         auth0Id: string;
         email: string;

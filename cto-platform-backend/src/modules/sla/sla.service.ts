@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class SlaService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async findAll() {
     return this.prisma.sLADefinition.findMany({
@@ -40,13 +40,13 @@ export class SlaService {
     });
   }
 
-  async create(data: Prisma.SLADefinitionCreateInput) {
+  async create(data: Prisma.SLADefinitionUncheckedCreateInput) {
     return this.prisma.sLADefinition.create({
       data,
     });
   }
 
-  async update(id: string, data: Prisma.SLADefinitionUpdateInput) {
+  async update(id: string, data: Prisma.SLADefinitionUncheckedUpdateInput) {
     return this.prisma.sLADefinition.update({
       where: { id },
       data,

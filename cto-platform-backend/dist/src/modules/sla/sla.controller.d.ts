@@ -4,12 +4,12 @@ export declare class SlaController {
     private readonly slaService;
     constructor(slaService: SlaService);
     findAll(): Promise<({
-        _count: {
-            breaches: number;
-        };
         team: {
             id: string;
             name: string;
+        };
+        _count: {
+            breaches: number;
         };
     } & {
         id: string;
@@ -59,14 +59,24 @@ export declare class SlaController {
         targetValue: number;
         isResolved: boolean;
         slaId: string;
-        actualValue: number;
         breachStart: Date;
         breachEnd: Date | null;
         severity: import("@prisma/client").$Enums.BreachSeverity;
+        actualValue: number;
         variance: number;
         resolutionNotes: string | null;
     })[]>;
     findOne(id: string): Promise<({
+        metrics: {
+            id: string;
+            teamId: string;
+            metricType: string;
+            targetValue: number;
+            time: Date;
+            slaId: string;
+            actualValue: number;
+            status: import("@prisma/client").$Enums.SLAStatus;
+        }[];
         team: {
             id: string;
             createdAt: Date;
@@ -78,16 +88,6 @@ export declare class SlaController {
             accountId: string;
             teamLeadId: string;
         };
-        metrics: {
-            id: string;
-            teamId: string;
-            time: Date;
-            metricType: string;
-            targetValue: number;
-            slaId: string;
-            actualValue: number;
-            status: import("@prisma/client").$Enums.SLAStatus;
-        }[];
         breaches: {
             id: string;
             createdAt: Date;
@@ -95,10 +95,10 @@ export declare class SlaController {
             targetValue: number;
             isResolved: boolean;
             slaId: string;
-            actualValue: number;
             breachStart: Date;
             breachEnd: Date | null;
             severity: import("@prisma/client").$Enums.BreachSeverity;
+            actualValue: number;
             variance: number;
             resolutionNotes: string | null;
         }[];

@@ -4,12 +4,12 @@ export declare class SlaService {
     private prisma;
     constructor(prisma: PrismaService);
     findAll(): Promise<({
-        _count: {
-            breaches: number;
-        };
         team: {
             id: string;
             name: string;
+        };
+        _count: {
+            breaches: number;
         };
     } & {
         id: string;
@@ -26,6 +26,16 @@ export declare class SlaService {
         measurementWindow: string;
     })[]>;
     findOne(id: string): Promise<({
+        metrics: {
+            id: string;
+            teamId: string;
+            metricType: string;
+            targetValue: number;
+            time: Date;
+            slaId: string;
+            actualValue: number;
+            status: import("@prisma/client").$Enums.SLAStatus;
+        }[];
         team: {
             id: string;
             createdAt: Date;
@@ -37,16 +47,6 @@ export declare class SlaService {
             accountId: string;
             teamLeadId: string;
         };
-        metrics: {
-            id: string;
-            teamId: string;
-            time: Date;
-            metricType: string;
-            targetValue: number;
-            slaId: string;
-            actualValue: number;
-            status: import("@prisma/client").$Enums.SLAStatus;
-        }[];
         breaches: {
             id: string;
             createdAt: Date;
@@ -54,10 +54,10 @@ export declare class SlaService {
             targetValue: number;
             isResolved: boolean;
             slaId: string;
-            actualValue: number;
             breachStart: Date;
             breachEnd: Date | null;
             severity: import("@prisma/client").$Enums.BreachSeverity;
+            actualValue: number;
             variance: number;
             resolutionNotes: string | null;
         }[];
@@ -75,7 +75,7 @@ export declare class SlaService {
         thresholdCritical: number;
         measurementWindow: string;
     }) | null>;
-    create(data: Prisma.SLADefinitionCreateInput): Promise<{
+    create(data: Prisma.SLADefinitionUncheckedCreateInput): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -89,7 +89,7 @@ export declare class SlaService {
         thresholdCritical: number;
         measurementWindow: string;
     }>;
-    update(id: string, data: Prisma.SLADefinitionUpdateInput): Promise<{
+    update(id: string, data: Prisma.SLADefinitionUncheckedUpdateInput): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -151,10 +151,10 @@ export declare class SlaService {
         targetValue: number;
         isResolved: boolean;
         slaId: string;
-        actualValue: number;
         breachStart: Date;
         breachEnd: Date | null;
         severity: import("@prisma/client").$Enums.BreachSeverity;
+        actualValue: number;
         variance: number;
         resolutionNotes: string | null;
     })[]>;

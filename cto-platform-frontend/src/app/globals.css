@@ -16,6 +16,10 @@
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #8b5cf6;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
   --chart-1: #8b5cf6;
   --chart-2: #3b82f6;
   --chart-3: #06b6d4;
@@ -39,6 +43,10 @@
   --border: #27272a;
   --input: #27272a;
   --ring: #a78bfa;
+  --popover: #18181b;
+  --popover-foreground: #ededed;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #ededed;
   --chart-1: #a78bfa;
   --chart-2: #60a5fa;
   --chart-3: #22d3ee;
@@ -62,6 +70,10 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
